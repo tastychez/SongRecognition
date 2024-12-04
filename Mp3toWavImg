@@ -10,7 +10,7 @@ def mp3_to_wav_and_image(input_file, image_filename="waveform.png"):
         audio = AudioSegment.from_file(input_file, format="mp3")
         wav_data = np.array(audio.get_array_of_samples())
         wav_rate = audio.frame_rate
-        
+
         # Use the manually specified Desktop path
         desktop_folder = Path("C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop")
         if not desktop_folder.exists():
@@ -20,12 +20,16 @@ def mp3_to_wav_and_image(input_file, image_filename="waveform.png"):
         write_wav(wav_output_path, wav_rate, wav_data.astype(np.int16))
         print(f"WAV file saved to {wav_output_path}")
         
-        # Plot waveform
-        plt.figure(figsize=(10, 4))
-        plt.plot(wav_data[:wav_rate * 10], color="blue")  # Plot the first 10 seconds
+        # Plot waveform with a clearer x-axis
+        plt.figure(figsize=(12, 6))  # Larger figure for better visibility
+        time_axis = np.linspace(0, len(wav_data) / wav_rate, num=len(wav_data))  # Create a time axis in seconds
+        plt.plot(time_axis[:wav_rate * 5], wav_data[:wav_rate * 5], color="blue")  # Plot the first 5 seconds
+
+        # Add labels and adjust spacing
         plt.title("Audio Waveform")
-        plt.xlabel("Sample Index")
+        plt.xlabel("Time (seconds)")
         plt.ylabel("Amplitude")
+        plt.grid(True, which="both", linestyle="--", linewidth=0.5, alpha=0.7)
         plt.tight_layout()
 
         # Save image to the Desktop
@@ -38,6 +42,6 @@ def mp3_to_wav_and_image(input_file, image_filename="waveform.png"):
         print(f"File not found: {fnf_error}")
     except Exception as e:
         print(f"Error: {e}")
-
-input_file = "C:/Users/hzhang/Downloads/output.mp3"  # Replace with your MP3 file path
+        
+input_file = "C:/Users/hzhang/Downloads/spotifydown.com - Perfect.mp3"  # Replace with your MP3 file path
 mp3_to_wav_and_image(input_file)
