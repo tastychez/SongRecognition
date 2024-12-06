@@ -4,12 +4,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-def mp3_to_wav_and_image(input_file, image_filename="perfectnightwaveform2.png"): #change here what u want ur output name to be 
+def mp3_to_wav_and_image(input_file, image_filename="poop.png"): #change here what u want ur output name to be 
     try:
         #convert MP3 to WAV
         audio = AudioSegment.from_file(input_file, format="mp3")
         wav_data = np.array(audio.get_array_of_samples())
+        # print (wav_data)
         wav_rate = audio.frame_rate
+        # # print("First 10 samples:", wav_data[wav_rate:(wav_rate+1000)])
+        # print("Last 10 samples:", wav_data[-10:])
+        # print (wav_rate)
 
         # find desktop path
         desktop_folder = Path("C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop")
