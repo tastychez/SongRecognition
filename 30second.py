@@ -1,3 +1,4 @@
+import argparse
 from pydub import AudioSegment
 
 def splice_mp3(input_file, output_file, duration=10):
@@ -9,7 +10,7 @@ def splice_mp3(input_file, output_file, duration=10):
             print("Error: Input file has no audio content.")
             return
         
-        # truncate to duration u want
+        # truncate to duration you want
         spliced_audio = audio[:duration * 1000]  # duration in milliseconds
 
         # Export the result with a specified bitrate
@@ -18,6 +19,12 @@ def splice_mp3(input_file, output_file, duration=10):
     except Exception as e:
         print(f"Error: {e}")
 
-input_file = "C:/Users/hzhang/Downloads/spotifydown.com - Perfect Night.mp3"  # Replace with your input file name
-output_file = "output.mp3"  # Replace with your desired output file name
-splice_mp3(input_file, output_file)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Splice an MP3 file to a specified duration.")
+    parser.add_argument("input_file", type=str, help="Path to the input MP3 file.")
+    parser.add_argument("output_file", type=str, help="Path to save the spliced MP3 file.")
+    parser.add_argument("--duration", type=int, default=10, help="Duration to splice in seconds (default: 10 seconds).")
+
+    args = parser.parse_args()
+
+    splice_mp3(args.input_file, args.output_file, args.duration)
