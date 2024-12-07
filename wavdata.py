@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
 from scipy.io import savemat
 
-def mp3_to_matlab(input_file, output_filename="poopdata.mat"):
+def mp3_to_matlab(input_file, output_filename="poop3.mat"):
     try:
         # Convert MP3 to WAV
         audio = AudioSegment.from_file(input_file, format="mp3")
@@ -16,7 +16,7 @@ def mp3_to_matlab(input_file, output_filename="poopdata.mat"):
             raise ValueError("The audio file is shorter than 10 seconds.")
 
         # Slice the data for the first 10 seconds
-        wav_data = wav_data[:max_samples]
+        wav_data = wav_data[:max_samples:45]
         time_axis = np.linspace(0, 10, num=max_samples)  # Time axis for the first 10 seconds
 
         # Find desktop path
@@ -40,5 +40,5 @@ def mp3_to_matlab(input_file, output_filename="poopdata.mat"):
     except Exception as e:
         print(f"Error: {e}")
 
-input_file = "C:/Users/hzhang/Downloads/spotifydown.com - Freed From Desire - prod. Molella, Phil Jay.mp3" # Replace with your MP3 file path
+input_file = "C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop/Recording.mp3" # Replace with your MP3 file path
 mp3_to_matlab(input_file)
