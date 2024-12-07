@@ -31,7 +31,7 @@ def folder_to_matlab(input_folder, output_folder=None):
                     continue
                 
                 # slice for the first 10 seconds
-                wav_data = wav_data[:max_samples]
+                wav_data = wav_data[:max_samples: 45]
                 time_axis = np.linspace(0, 10, num=max_samples)  # time axis 
 
                 # save to MATLAB .mat file
@@ -56,5 +56,5 @@ def folder_to_matlab(input_folder, output_folder=None):
 
 # Example usage
 input_folder = "C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop/mp3 files"  # replace with your folder path
-output_folder = "C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop/ProcessAudio" # replace with your folder path
+output_folder = "C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop/timesteps45" # replace with your folder path
 folder_to_matlab(input_folder, output_folder)
