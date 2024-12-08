@@ -58,6 +58,6 @@ def folder_to_matlab(input_folder, output_folder=None):
         print(f"Error: {e}")
 
 # Example usage
-input_folder = "C:/Users/ewei/OneDrive - Olin College of Engineering/QEA1/SongRecg"  # replace with your folder path
-output_folder = "C:/Users/ewei/Desktop/SongRecognition" # replace with your folder path
+input_folder = "./"  # replace with your relative folder path
+output_folder = "./"  # current directory for output
 folder_to_matlab(input_folder, output_folder)
