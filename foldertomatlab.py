@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
 from scipy.io import savemat
 
-duration = 10
+duration = 10 # 10 seconds opening of any audio files
 
 def folder_to_matlab(input_folder, output_folder=None):
     try:
@@ -16,7 +16,7 @@ def folder_to_matlab(input_folder, output_folder=None):
         output_folder = Path(output_folder)
         output_folder.mkdir(parents=True, exist_ok=True)
 
-        files = sorted(input_folder.glob("*.mp3"))  # can adjust file 
+        files = sorted(input_folder.glob("*.mp3")) + sorted(input_folder.glob("*.m4a")) # can adjust file 
         if len(files) == 0:
             raise ValueError(f"No MP3 files found in {input_folder}")
 
