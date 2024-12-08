@@ -46,5 +46,5 @@ def mp3_to_wav_and_image(input_file, image_filename="poop.png"): #change here wh
     except Exception as e:
         print(f"Error: {e}")
 
-input_file = "C:/Users/hzhang/output.mp3"  # Replace with your MP3 file path
+input_file = "C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop/test/Recording.mp3"  # Replace with your MP3 file path
 mp3_to_wav_and_image(input_file)

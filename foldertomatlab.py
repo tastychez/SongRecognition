@@ -14,28 +14,28 @@ def folder_to_matlab(input_folder, output_folder=None):
         output_folder = Path(output_folder)
         output_folder.mkdir(parents=True, exist_ok=True)
 
-        files = sorted(input_folder.glob("*.mp3"))  # can adjust file 
+        files = sorted(input_folder.glob("*.mp3"))
         if len(files) == 0:
             raise ValueError(f"No MP3 files found in {input_folder}")
+
+        target_rate = 44100 #CHANGED FREQUECNY SO IT IS CNSOSTNET
 
         for idx, file in enumerate(files, start=1):
             try:
                 audio = AudioSegment.from_file(file, format="mp3")
+                audio = audio.set_frame_rate(target_rate)
                 wav_data = np.array(audio.get_array_of_samples())
-                wav_rate = audio.frame_rate
+                wav_rate = target_rate
 
-                # Determine the number of samples for 10 seconds
-                max_samples = wav_rate * 10  # 10 seconds
+                max_samples = wav_rate * 10
                 if len(wav_data) < max_samples:
                     print(f"Skipping {file.name}: Audio shorter than 10 seconds.")
                     continue
                 
-                # slice for the first 10 seconds
-                wav_data = wav_data[:max_samples: 45]
-                time_axis = np.linspace(0, 10, num=max_samples)  # time axis 
-
-                # save to MATLAB .mat file
-                output_filename = f"wavdatasong{idx}.mat"
+                wav_data = wav_data[:max_samples:45]
+                time_axis = np.linspace(0, 10, num=len(wav_data))
+                
+                output_filename = f"newupdated12.7withtimesteps{idx}.mat"
                 output_path = output_folder / output_filename
                 data = {
                     "time": time_axis,
@@ -54,7 +54,6 @@ def folder_to_matlab(input_folder, output_folder=None):
     except Exception as e:
         print(f"Error: {e}")
 
-# Example usage
-input_folder = "C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop/mp3 files"  # replace with your folder path
-output_folder = "C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop/timesteps45" # replace with your folder path
+input_folder = "C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop/mp3 files"
+output_folder = "C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop/BigMatrix"
 folder_to_matlab(input_folder, output_folder)
