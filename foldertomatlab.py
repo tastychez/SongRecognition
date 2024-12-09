@@ -2,6 +2,7 @@ from pydub import AudioSegment
 import numpy as np
 from pathlib import Path
 from scipy.io import savemat
+from scipy.signal import medfilt
 
 duration = 10 # 10 seconds opening of any audio files
 
@@ -25,6 +26,8 @@ def folder_to_matlab(input_folder, output_folder=None):
                 audio = AudioSegment.from_file(file)
                 audio = audio.set_frame_rate(44100) # set framerates to mp3 standards
                 wav_data = np.array(audio.get_array_of_samples())
+                # Strip leading zeros from wav_data
+                # wav_data = np.trim_zeros(wav_data, 'f')
                 wav_rate = audio.frame_rate
 
                 # Determine the number of samples for 10 seconds
@@ -34,11 +37,21 @@ def folder_to_matlab(input_folder, output_folder=None):
                     continue
                 
                 # slice for the first 10 seconds
-                wav_data = wav_data[:max_samples:45]
+                wav_data = wav_data[:max_samples]
+
+                # Apply chunk-based median filter
+                chunk_size = 45  # 0.1 second chunks for 44100 Hz sample rate
+                filtered_data = []
+                for i in range(0, len(wav_data), chunk_size):
+                    chunk = wav_data[i:i + chunk_size]
+                    median_value = np.median(chunk)
+                    filtered_data.extend([median_value] * len(chunk))
+                wav_data = np.array(filtered_data)
+                wav_data = wav_data[::chunk_size]
                 time_axis = np.linspace(0, duration, num=max_samples)  # time axis 
 
                 # save to MATLAB .mat file
-                output_filename = f"wavdatasong{idx}.mat"
+                output_filename = f"{file.stem}.mat"
                 output_path = output_folder / output_filename
                 data = {
                     "time": time_axis,

@@ -35,8 +35,19 @@ def folder_to_combined_matlab(input_folder, output_folder=None, output_filename=
                     print(f"Skipping {file.name}: Audio shorter than 10 seconds.")
                     continue
                 
-                # slice the data for the first 10 seconds
-                wav_data = wav_data[:max_samples: 45]
+                # slice for the first 10 seconds
+                wav_data = wav_data[:max_samples]
+
+                # Apply chunk-based median filter
+                chunk_size = 45  # 0.1 second chunks for 44100 Hz sample rate
+                filtered_data = []
+                for i in range(0, len(wav_data), chunk_size):
+                    chunk = wav_data[i:i + chunk_size]
+                    median_value = np.median(chunk)
+                    filtered_data.extend([median_value] * len(chunk))
+                wav_data = np.array(filtered_data)
+                wav_data = wav_data[::chunk_size]
+
                 time_axis = np.linspace(0, 10, num=max_samples)  # time axis for the first 10 seconds
 
                 combined_time.append(time_axis)
@@ -66,6 +77,6 @@ def folder_to_combined_matlab(input_folder, output_folder=None, output_filename=
     except Exception as e:
         print(f"Error: {e}")
 
-input_folder = "C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop/mp3 files"  # Replace with your folder path
-output_folder = "C:/Users/hzhang/OneDrive - Olin College of Engineering/Desktop/timesteps45"  # Replace with your folder path
+input_folder = "C:/Users/ewei/Downloads/MP3 Files"  # Replace with your folder path
+output_folder = "./"  # Replace with your folder path
 folder_to_combined_matlab(input_folder, output_folder)
