@@ -21,10 +21,11 @@ def folder_to_matlab(input_folder, output_folder=None):
         if len(files) == 0:
             raise ValueError(f"No MP3 files found in {input_folder}")
 
+        target_rate = 44100 #CHANGED FREQUECNY SO IT IS CNSOSTNET
+
         for idx, file in enumerate(files, start=1):
             try:
-                audio = AudioSegment.from_file(file)
-                audio = audio.set_frame_rate(44100) # set framerates to mp3 standards
+                audio = AudioSegment.from_file(file, format="mp3")
                 wav_data = np.array(audio.get_array_of_samples())
                 # Strip leading zeros from wav_data
                 # wav_data = np.trim_zeros(wav_data, 'f')
