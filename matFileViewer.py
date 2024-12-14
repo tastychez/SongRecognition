@@ -1,12 +1,11 @@
 import argparse
-
 import scipy.io
 
 def view_mat_file(file_path):
     mat_contents = scipy.io.loadmat(file_path)
     for key, value in mat_contents.items():
         if not key.startswith('__'):
-            print(f"{key}: {value}")
+            print(f"{key}: {value} (shape: {value.shape})")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='View contents of a .mat file.')

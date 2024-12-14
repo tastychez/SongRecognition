@@ -14,7 +14,7 @@ def extract_mfcc(audio_file, duration=10, sr=44100, n_mfcc=13):
         audio = AudioSegment.from_file(audio_file)
         audio = audio.set_frame_rate(44100) # set framerates to mp3 standards
         y = np.array(audio.get_array_of_samples(), dtype=np.float32)
-        y = np.trim_zeros(y)  # Remove leading zeros
+        # y = np.trim_zeros(y)  # Remove leading zeros
     else:
         y, sr = librosa.load(audio_file, sr=sr)  # y is the audio time series, sr is the sampling rate
 
@@ -38,7 +38,7 @@ def extract_mfcc_from_folder(input_folder, output_folder, duration=10, sr=44100,
     filenames = []
     input_folder = Path(input_folder)
     output_folder = Path(output_folder)
-    files = sorted(input_folder.glob("*.mp3")) + sorted(input_folder.glob("*.m4a")) # can adjust file 
+    files = sorted(input_folder.glob("*.m4a")) # can adjust file 
     if len(files) == 0:
         raise ValueError(f"No MP3 files found in {input_folder}")
     
@@ -61,20 +61,17 @@ def extract_mfcc_from_folder(input_folder, output_folder, duration=10, sr=44100,
 
     output_path = output_folder / "training_songs.mat"
     data = {
-                "amplitude": mfcc_list,
-                "filenames": filenames  
+                "amplitude": mfcc_list
             }
     savemat(output_path, data)
 
 if __name__ == "__main__":
 
-    audio_file = 'Britney Spears - Toxic (Instrumental).mp3'  # Replace with your audio file path
-    mfcc, sr = extract_mfcc(audio_file)
-    data = {
-        'amplitude': mfcc
-    }
-    audio_file = audio_file.replace('.mp3', '.mat')
-    savemat('./' + audio_file, data)
-    
-
-    # extract_mfcc_from_folder("C:/Users/ewei/Downloads/mp3s", "./")
+    # audio_file = 'Britney Spears - Toxic (Instrumental).mp3'  # Replace with your audio file path
+    # mfcc, sr = extract_mfcc(audio_file)
+    # data = {
+    #     'amplitude': mfcc
+    # }
+    # audio_file = audio_file.replace('.mp3', '.mat')
+    # savemat('./' + audio_file, data)
+    extract_mfcc_from_folder("./", "./")
